@@ -53,9 +53,14 @@ namespace Windows.Forms
             EditAction?.Invoke(editView, user);
         }
 
-        public void Open()
+        public void OpenView()
         {
             Application.Run(this);
+        }
+
+        public void CloseView()
+        {
+            Close();
         }
 
         public void UpdateUsers(IList<User> users)

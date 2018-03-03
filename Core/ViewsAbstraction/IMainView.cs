@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace Core.ViewsAbstraction
 {
-    public interface IMainView
+    public interface IMainView : IBaseView
     {
         Action<IEditView> AddAction { get; set; }
         Action<IEditView, User> EditAction {get;set;}
         Action<User> DeleteAction { get; set; }
 
-        void Open();
         void UpdateUsers(IList<User> users);
     }
 }

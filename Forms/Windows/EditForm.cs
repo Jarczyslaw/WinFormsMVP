@@ -39,9 +39,14 @@ namespace Windows.Forms
             btnSave.Text = newUser ? "Add new" : "Save changes";
         }
 
-        public void Open()
+        public void OpenView()
         {
             ShowDialog();
+        }
+
+        public void CloseView()
+        {
+            Close();
         }
 
         private bool ValidateData()

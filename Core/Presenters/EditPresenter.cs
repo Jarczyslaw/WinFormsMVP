@@ -57,7 +57,7 @@ namespace Core.Presenters
         public bool ShowView()
         {
             view.LoadUser(user);
-            view.Open();
+            view.OpenView();
             return changesMade;
         }
     }

@@ -44,7 +44,7 @@ namespace Core.Presenters
         public void ShowView()
         {
             UpdateView();
-            view.Open();
+            view.OpenView();
         }
 
         private void UpdateView()

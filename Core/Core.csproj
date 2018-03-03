@@ -43,6 +43,7 @@
     <Compile Include="Presenters\EditPresenter.cs" />
     <Compile Include="Presenters\MainPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewsAbstraction\IBaseView.cs" />
     <Compile Include="ViewsAbstraction\IEditView.cs" />
     <Compile Include="ViewsAbstraction\IMainView.cs" />
   </ItemGroup>

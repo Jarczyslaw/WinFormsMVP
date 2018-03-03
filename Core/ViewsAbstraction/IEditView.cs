@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace Core.ViewsAbstraction
 {
-    public interface IEditView
+    public interface IEditView : IBaseView
     {
         Action<User> SaveUser { get; set; }
 
         void SetAsNew(bool newUser);
         void LoadUser(User user);
-        void Open();
     }
 }
