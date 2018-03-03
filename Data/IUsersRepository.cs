@@ -9,6 +9,7 @@ namespace Data
 {
     public interface IUsersRepository
     {
+        void Initialize();
         User GetUserById(int id);
         IList<User> GetUsers();
         int AddUser(User user);

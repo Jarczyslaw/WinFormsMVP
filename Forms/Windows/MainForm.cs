@@ -68,9 +68,7 @@ namespace Windows.Forms
         private void dgvUsers_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
-            {
                 contextMenu.Show(new Point(e.X, e.Y));
-            }
         }
 
         private void DgvUsers_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

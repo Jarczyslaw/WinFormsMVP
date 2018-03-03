@@ -23,6 +23,7 @@ namespace Forms
 
             IMainView mainView = new MainForm();
             IUsersRepository usersRepository = new UsersRepository();
+            usersRepository.Initialize();
 
             var mainPresenter = new MainPresenter(mainView, usersRepository);
             mainPresenter.ShowView();

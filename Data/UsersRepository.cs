@@ -11,11 +11,6 @@ namespace Data
     {
         private List<User> users = new List<User>();
 
-        public UsersRepository()
-        {
-            Initialize();
-        }
-
         public User GetUserById(int id)
         {
             return users.Where(u => u.Id == id).SingleOrDefault();
@@ -59,7 +54,7 @@ namespace Data
                 return false;
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             users.Clear();
             users.Add(new User()
