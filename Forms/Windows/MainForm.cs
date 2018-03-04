@@ -15,11 +15,21 @@ namespace Windows.Forms
 {
     public partial class MainForm : Form, IMainView
     {
-        public Action<IEditView> AddAction { get; set; }
-        public Action<IEditView, User> EditAction { get; set; }
-        public Action<User> DeleteAction { get; set; }
+        public Action<IEditView> AddUser { get; set; }
+        public Action<IEditView, User> EditUser { get; set; }
+        public Action<User> DeleteUser { get; set; }
 
         private UsersGridContextMenu contextMenu;
+
+        public IList<User> Users
+        {
+            get { return dgvUsers.DataSource as IList<User>; }
+            set
+            {
+                dgvUsers.DataSource = null;
+                dgvUsers.DataSource = value;
+            }
+        }
 
         public MainForm()
         {
@@ -37,20 +47,20 @@ namespace Windows.Forms
                 if (result == DialogResult.Yes)
                 {
                     var user = o as User;
-                    DeleteAction?.Invoke(user);
+                    DeleteUser?.Invoke(user);
                 }
             };
             contextMenu.EditItem = (o) =>
             {
                 var user = o as User;
-                EditUser(user);
+                Edit(user);
             };
         }
 
-        private void EditUser(User user)
+        private void Edit(User user)
         {
             IEditView editView = new EditForm();
-            EditAction?.Invoke(editView, user);
+            EditUser?.Invoke(editView, user);
         }
 
         public void OpenView()
@@ -61,13 +71,6 @@ namespace Windows.Forms
         public void CloseView()
         {
             Close();
-        }
-
-        public void UpdateUsers(IList<User> users)
-        {
-            var source = new BindingSource();
-            source.DataSource = users;
-            dgvUsers.DataSource = source;
         }
 
         private void dgvUsers_MouseClick(object sender, MouseEventArgs e)
@@ -84,7 +87,7 @@ namespace Windows.Forms
         private void btnAddUser_Click(object sender, EventArgs e)
         {
             IEditView editView = new EditForm();
-            AddAction?.Invoke(editView);
+            AddUser?.Invoke(editView);
         }
 
         private void dgvUsers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -92,7 +95,7 @@ namespace Windows.Forms
             if (e.RowIndex != -1)
             {
                 var user = dgvUsers.Rows[e.RowIndex].DataBoundItem as User;
-                EditUser(user);
+                Edit(user);
             }
         }
     }

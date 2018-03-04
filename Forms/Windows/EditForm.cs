@@ -14,29 +14,30 @@ namespace Windows.Forms
 {
     public partial class EditForm : Form, IEditView
     {
-        public Action<User> SaveUser { get; set; }
+        public Action AddUser { get; set; }
+        public Action EditUser { get; set; }
 
-        private User user;
+        public int UserId
+        {
+            get { return int.Parse(tbUserId.Text); }
+            set { tbUserId.Text = value.ToString(); }
+        }
+
+        public string UserName
+        {
+            get { return tbName.Text; }
+            set { tbName.Text = value; }
+        }
+
+        public int UserAge
+        {
+            get { return (int)nudAge.Value; }
+            set { nudAge.Value = value; }
+        }
 
         public EditForm()
         {
             InitializeComponent();
-        }
-
-        public void LoadUser(User user)
-        {
-            this.user = user;
-            if (user.Id <= 0)
-                tbUserId.Text = "n/a";
-            else
-                tbUserId.Text = user.Id.ToString();
-            tbName.Text = user.Name;
-            nudAge.Value = user.Age;
-        }
-
-        public void SetAsNew(bool newUser)
-        {
-            btnSave.Text = newUser ? "Add new" : "Save changes";
         }
 
         public void OpenView()
@@ -51,10 +52,10 @@ namespace Windows.Forms
 
         private bool ValidateData()
         {
-            if (nudAge.Value <= 0)
+            if (UserAge <= 0)
                 return false;
 
-            if (string.IsNullOrEmpty(tbName.Text))
+            if (string.IsNullOrEmpty(UserName))
                 return false;
 
             return true;
@@ -72,10 +73,11 @@ namespace Windows.Forms
                 MessageBox.Show("Invalid data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-                
-            user.Age = (int)nudAge.Value;
-            user.Name = tbName.Text;
-            SaveUser?.Invoke(user);
+
+            if (UserId <= 0)
+                AddUser?.Invoke();
+            else
+                EditUser?.Invoke();
             Close();
         }
     }

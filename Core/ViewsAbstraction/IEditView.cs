@@ -9,9 +9,11 @@ namespace Core.ViewsAbstraction
 {
     public interface IEditView : IBaseView
     {
-        Action<User> SaveUser { get; set; }
+        Action AddUser { get; set; }
+        Action EditUser { get; set; }
 
-        void SetAsNew(bool newUser);
-        void LoadUser(User user);
+        int UserId { get; set; }
+        string UserName { get; set; }
+        int UserAge { get; set; }
     }
 }

@@ -12,22 +12,31 @@ namespace Core.Test
     public class MainPresenterTests
     {
         private IUsersRepository usersRepository;
+        private IMainView view;
+        private MainPresenter presenter;
 
         [TestInitialize]
         public void Initialize()
         {
             usersRepository = new UsersRepository();
+            view = Substitute.For<IMainView>();
+            presenter = new MainPresenter(view, usersRepository);
+        }
+
+        [TestMethod]
+        public void ShowUsers()
+        {
+            usersRepository.Initialize();
+            presenter.UpdateView();
+            CollectionAssert.AreEqual(usersRepository.GetUsers().ToList(), view.Users.ToList());
         }
 
         [TestMethod]
         public void DeleteUser()
         {
-            var view = Substitute.For<IMainView>();
-            var presenter = new MainPresenter(view, usersRepository);
-
             usersRepository.Initialize();
             var firstUser = usersRepository.GetUsers().First();
-            view.DeleteAction(firstUser);
+            view.DeleteUser(firstUser);
             Assert.IsFalse(usersRepository.GetUsers().Contains(firstUser));
         }
     }

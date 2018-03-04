@@ -15,50 +15,55 @@ namespace Core.Presenters
         private IEditView view;
         private IUsersRepository userRepository;
 
-        private User user;
-
-        private bool changesMade = false;
-        private bool newUser = false;
+        public MainPresenter MainPresenter { get; set; }
 
         public EditPresenter(IEditView view, IUsersRepository userRepository)
         {
             this.view = view;
             this.userRepository = userRepository;
-            view.SaveUser += SaveUser;
+
+            view.AddUser += AddUser;
+            view.EditUser += EditUser;
         }
 
-        public void SetUser(User user)
+        private void AddUser()
         {
-            if (user == null)
-            {
-                this.user = new User(string.Empty, 30);
-                newUser = true;
-            }
-            else
-                this.user = user;
-            view.SetAsNew(newUser);
+            var editedUser = GetUserFromView();
+            int newId = userRepository.AddUser(editedUser);
+            Debug.WriteLine(string.Format("User with id: {0} added", newId));
+            MainPresenter?.UpdateView();
         }
 
-        private void SaveUser(User user)
+        private void EditUser()
         {
-            if (newUser)
-            {
-                int newId = userRepository.AddUser(user);
-                Debug.WriteLine(string.Format("User with id: {0} added", newId));
-            }  
-            else
-            {
-                userRepository.EditUser(user);
-                Debug.WriteLine(string.Format("User with id: {0} edited", user.Id));
-            }  
-            changesMade = true;
+            var newUser = GetUserFromView();
+            userRepository.EditUser(newUser);
+            Debug.WriteLine(string.Format("User with id: {0} edited", newUser.Id));
+            MainPresenter?.UpdateView();
         }
 
-        public bool ShowView()
+        public void Edit(User user)
         {
-            view.LoadUser(user);
+            SetUserToView(user);
             view.OpenView();
-            return changesMade;
+        }
+
+        private void SetUserToView(User user)
+        {
+            view.UserId = user.Id;
+            view.UserName = user.Name;
+            view.UserAge = user.Age;
+        }
+
+        private User GetUserFromView()
+        {
+            var user = new User()
+            {
+                Id = view.UserId,
+                Name = view.UserName,
+                Age = view.UserAge
+            };
+            return user;
         }
     }
 }

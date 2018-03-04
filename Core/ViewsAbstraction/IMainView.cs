@@ -9,10 +9,10 @@ namespace Core.ViewsAbstraction
 {
     public interface IMainView : IBaseView
     {
-        Action<IEditView> AddAction { get; set; }
-        Action<IEditView, User> EditAction {get;set;}
-        Action<User> DeleteAction { get; set; }
+        Action<IEditView> AddUser { get; set; }
+        Action<IEditView, User> EditUser {get;set;}
+        Action<User> DeleteUser { get; set; }
 
-        void UpdateUsers(IList<User> users);
+        IList<User> Users { get; set; }
     }
 }

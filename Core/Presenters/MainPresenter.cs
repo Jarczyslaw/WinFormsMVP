@@ -20,18 +20,26 @@ namespace Core.Presenters
             this.view = view;
             this.usersRepository = usersRepository;
 
-            view.AddAction += (v) => ShowEdit(v, null);
-            view.EditAction += (v, u) => ShowEdit(v, u);
-            view.DeleteAction += DeleteUser;
+            view.AddUser += (v) => ShowEdit(v, null);
+            view.EditUser += (v, u) => ShowEdit(v, u);
+            view.DeleteUser += DeleteUser;
         }
 
         private void ShowEdit(IEditView editView, User user)
         {
+            if (user == null)
+            {
+                user = new User()
+                {
+                    Id = 0,
+                    Name = string.Empty,
+                    Age = 30
+                };
+            }
+                
             var editPresenter = new EditPresenter(editView, usersRepository);
-            editPresenter.SetUser(user);
-            var changesMade = editPresenter.ShowView();
-            if (changesMade)
-                UpdateView();
+            editPresenter.MainPresenter = this;
+            editPresenter.Edit(user);
         }
 
         private void DeleteUser(User user)
@@ -47,10 +55,10 @@ namespace Core.Presenters
             view.OpenView();
         }
 
-        private void UpdateView()
+        public void UpdateView()
         {
             var users = usersRepository.GetUsers();
-            view.UpdateUsers(usersRepository.GetUsers());
+            view.Users = users;
         }
     }
 }
